@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
+
 
 
 export default class UserSignIn extends Component {
@@ -17,7 +19,7 @@ export default class UserSignIn extends Component {
                     </label>
                     <button className="button" type="submit">Sign In</button><button className="button button-secondary" onClick="event.preventDefault(); location.href='index.html';">Cancel</button>
                 </form>
-                <p>Don't have a user account? Click here to <a href="/signup">sign up</a>!</p>
+                <p>Don't have a user account? Click here to <Link to="/signup">sign up</Link>!</p>
             </div>
         )
     }

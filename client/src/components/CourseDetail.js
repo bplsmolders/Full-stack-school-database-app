@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import Axios from 'axios';
 
 
@@ -32,9 +33,9 @@ export default class CourseDetail extends Component {
                 ?   <span></span>
                 :   <div className="actions--bar">
                         <div className="wrap">
-                            <a className="button" href= {`/courses/${course.id}/update`} >Update Course</a>
-                            <a className="button" href={`/courses/${course.id}/delete`}>Delete Course</a>
-                            <a className="button button-secondary" href="/">Return to List</a>
+                            <Link className="button" to= {`/courses/${course.id}/update`} >Update Course</Link>
+                            <Link className="button" to={`/`}>Delete Course</Link>
+                            <Link className="button button-secondary" to="/">Return to List</Link>
                         </div>
                     </div>
                 }
@@ -48,10 +49,9 @@ export default class CourseDetail extends Component {
                                 <h3 className="course--detail--title">Course</h3>
                                 <h4 className="course--name">{course.title}</h4>
                                 <p>{`By ${course.User.firstName} ${course.User.lastName} `}</p>
-                                {course.description.split(/\n/).map(des => 
-                                    <p key={des}>{des}</p>
+                                {course.description.split(/\n/).map((des, index) => 
+                                    <p key={index}>{des}</p>
                                 )}
-
                             </div>
                             <div>
                                 <h3 className="course--detail--title">Estimated Time</h3>
@@ -60,8 +60,8 @@ export default class CourseDetail extends Component {
                                 <h3 className="course--detail--title">Materials Needed</h3>
                                 <ul className="course--detail--list">
                                     {(course.materialsNeeded)
-                                    ? course.materialsNeeded.split('* ').map(material => 
-                                        <li key={material}>{material}</li>)
+                                    ? course.materialsNeeded.split('* ').map((material, index) => 
+                                        <li key={index}>{material}</li>)
                                     :   <li>No Materials Needed</li>
                                     }
                                 </ul>

@@ -8,6 +8,6 @@ function UserSignout() {
     return (
       <Redirect to="/" />
     );
-  }
+}
 
 export default UserSignout

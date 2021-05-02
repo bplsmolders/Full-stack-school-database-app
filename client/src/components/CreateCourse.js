@@ -1,24 +1,31 @@
 import React, {Component} from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 
 
 export default class CreateCourse extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
-            estimatedTime: '',
-            materialsNeeded: ''
+            formValues: {}
         };
     }
+
+    handleChange(event) {
+        event.preventDefault();
+        let formValues = this.state.formValues
+        let name= event.target.name
+        let value= event.target.value
+        formValues[name] = value
+
+        return this.setState({formValues})
+    }
     
-    handleSubmit(){
-        Axios.post('http://localhost:5000/api/courses', {
-            title: this.state.title,
-            description: this.state.description,
-            estimatedTime: this.state.estimatedTime,
-            materailsNeeded: this.state.materailsNeeded,
+    handleSubmit(data){
+        axios({
+            method: "post",
+            url: 'http://localhost:5000/api/courses',
+            data: data, 
+            headers: {"Content-Type": "multipart/form-data"}
         })
         .then(res => {
             console.log(res)
@@ -29,12 +36,14 @@ export default class CreateCourse extends Component {
     }
 
     render(){
-        const {
-            title,
-            description,
-            estimatedTime,
-            materialsNeeded
-        } = this.state;
+        // const {
+        //     title,
+        //     description,
+        //     estimatedTime,
+        //     materialsNeeded
+        // } = this.state;
+
+        // console.log(this.state.formValues)
 
         return(
             <div className="wrap">
@@ -46,26 +55,26 @@ export default class CreateCourse extends Component {
                         <li>Please provide a value for "Description"</li>
                     </ul>
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit(this.state.formValues)}>
                     <div className="main--flex">
                         <div>
                             <label>Course Title
-                                <input id="courseTitle" name="courseTitle" type="text"></input>
+                                <input id="title" name="title" type="text" value={this.state.formValues['title']} onChange={this.handleChange.bind(this)} />
                             </label>
 
                             <p>By Joe Smith</p>
 
                             <label>Course Description
-                                <textarea id="courseDescription" name="courseDescription"></textarea>
+                                <textarea id="description" name="description" value={this.state.formValues['description']} onChange={this.handleChange.bind(this)} />
                             </label>
                         </div>
                         <div>
                             <label>Estimated Time
-                                <input id="estimatedTime" name="estimatedTime" type="text"></input>
+                                <input id="estimatedTime" name="estimatedTime" type="text" value={this.state.formValues['estimatedTime']} onChange={this.handleChange.bind(this)} />
                             </label>
 
                             <label>Materials Needed
-                                <textarea id="materialsNeeded" name="materialsNeeded"></textarea>
+                                <textarea id="materialsNeeded" name="materialsNeeded" value={this.state.formValues['materialsNeeded']} onChange={this.handleChange.bind(this)}/>
                             </label>
                         </div>
                     </div>
