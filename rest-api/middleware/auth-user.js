@@ -29,7 +29,7 @@ exports.authenticateUser = async (req, res, next) => {
         message = `Authentication failure for username: ${user.firstName} ${user.lastName}`;
       }
     } else {
-      message = `User not found for username: ${user.firstName} ${user.lastName}`;
+      message = `User not found`;
     }
   } else {
     message = 'Auth header not found';

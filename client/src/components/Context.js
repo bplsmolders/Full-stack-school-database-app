@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-// import Cookies from 'js-cookie';
-// import Axios from 'axios';
-
-
-
+import Data from './Data';
+import Cookies from 'js-cookie';
 
 
 const Context = React.createContext(); 
@@ -12,66 +9,65 @@ export class Provider extends Component {
 
   constructor() {
       super();
-      this.courses = "hello"
+      this.data = new Data();
   }
 
-  // state = {
-  //     authenticatedUser: Cookies.getJSON('authenticatedUser') || null
-  // };
+  state = {
+      authenticatedUser: Cookies.getJSON('authenticatedUser') || null
+  };
 
   // componentDidMount(){
-  //   Axios.get('http://localhost:5000/')
-  //     .then( response => {
-  //         this.setState ({
-  //             courses: this.courses.push(response),
-  //         })
-  //     })
-  //     .catch(error => {
-  //         console.log('Error fetching and parsing data', error);
-  //     });    
+    // Axios.get('http://localhost:5000/api/users')
+    //   .then( res => {
+    //       console.log(res)
+    //       this.setState ({
+    //           data: res,
+    //       })
+    //   })
+    //   .catch(error => {
+    //       console.log('Error fetching and parsing data', error);
+    //   });    
   // }
 
 
   render() {
-      // const { authenticatedUser } = this.state;
+      const { authenticatedUser } = this.state;
 
       const value = {
-      // authenticatedUser,
-      message: "hello",
-      courses: this.courses,
-      // actions: {
-      //     signIn: this.signIn,
-      //     signOut: this.signOut
-      // }
-      }
+      authenticatedUser,
+      data: this.data,
+      actions: {
+          signIn: this.signIn,
+          signOut: this.signOut
+      }}
 
       return (
         <Context.Provider value={value}>
-          {/* {this.props.children} */}
+        {this.props.children}
         </Context.Provider>  
       );
   }
 
   
-//   signIn = async (username, password) => {
-//     const user = await this.data.getUser(username, password);
-//     if (user !== null) {
-//       this.setState(() => {
-//         return {
-//           authenticatedUser: user,
-//         }
-//       });
-//       // Set cookie
-//       Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
-//     } 
-//     return user;
-//   }
+  signIn = async (emailAddress, password) => {
+    const user = await this.data.getUser(emailAddress, password);
+    if (user !== null) {
+      this.setState(() => {
+        return {
+          authenticatedUser: user,
+        }
+      });
+      // Set cookie
+      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
+    } 
+    return user;
+  }
   
 
-//   signOut = () => {
-//     this.setState({ authenticatedUser: null });
-//     Cookies.remove('authenticatedUser');
-//   }
+  signOut = () => {
+    this.setState({ authenticatedUser: null });
+    Cookies.remove('authenticatedUser');
+  }
 }
 
 export const Consumer = Context.Consumer;

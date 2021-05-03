@@ -19,6 +19,8 @@ import UpdateCourse from './components/UpdateCourse'
 // components with context:
 const HeaderWithContext = withContext(Header);
 const CoursesWithContext = withContext(Courses)
+const UserSignUpWithContext = withContext(UserSignUp)
+const UserSignInWithContext = withContext(UserSignIn)
 
 export default class App extends Component {
   render(){
@@ -31,8 +33,8 @@ export default class App extends Component {
         <Route exact path="/courses/create" component={CreateCourse} />
         <Route exact path="/courses/:id" component= {CourseDetail} />
         <Route exact path="/courses/:id/update" component= {UpdateCourse} />
-        <Route exact path="/signin" component= {UserSignIn} />
-        <Route exact path="/signup" component= {UserSignUp} />
+        <Route exact path="/signin" component= {UserSignInWithContext} />
+        <Route exact path="/signup" component= {UserSignUpWithContext} />
         <Route exact path="/signout" component= {UserSignOut} />
       </Switch>
     </Router>
