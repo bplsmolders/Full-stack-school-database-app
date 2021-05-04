@@ -2,8 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
  
-function UserSignout() {
-    // useEffect(() =>  context.actions.signOut());
+function UserSignout(props) {
+    props.context.actions.signOut()
 
     return (
       <Redirect to="/" />

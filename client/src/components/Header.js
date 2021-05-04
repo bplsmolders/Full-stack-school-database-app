@@ -3,9 +3,6 @@ import { NavLink} from 'react-router-dom'
 
 function Header (props) {
   const  authUser  = props.context.authenticatedUser;
-  console.log(authUser)
-
-  //change the header display when logged in!
   return (
     <header>
       <div className="wrap header--flex">
@@ -13,8 +10,8 @@ function Header (props) {
             <nav>
               {authUser ? (
                   <ul className="header--signedout">
-                    <li><NavLink to="/signup">Sign Up</NavLink></li>
-                    <li><NavLink to="/signin">Sign In</NavLink></li>
+                    <li>Welcome {`${authUser.firstName} ${authUser.lastName}`}!</li>
+                    <li><NavLink to="/signout">Sign Out</NavLink></li>
                   </ul>
               ): (
                   <ul className="header--signedout">

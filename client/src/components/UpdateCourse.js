@@ -35,11 +35,19 @@ export default class UpdateCourse extends Component {
     }
     
     handleSubmit(data){
+        console.log(data)
+        const name = 'joe@smith.com'
+        const password = 'joepassword'
+        const encodedCredentials = btoa(`${name}:${password}`)
+
         Axios({
             method: "put",
             url: `http://localhost:5000/api/courses/${this.props.match.params.id}`,
             data: data, 
-            headers: {"Content-Type": "multipart/form-data"}
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Basic ${encodedCredentials}`
+            }
         })
         .then(res => {
             console.log(res)
@@ -49,8 +57,13 @@ export default class UpdateCourse extends Component {
         });    
     }
 
+    cancel(e){
+        // e.preventDefault();
+        console.log(e)
+        console.log('link clicked')
+    }
+
     render(){
-        console.log(this.props.match.params.id)
         const course = this.state.course
         return(
             <div className="wrap">
@@ -81,7 +94,7 @@ export default class UpdateCourse extends Component {
                                     </label>
                                 </div>
                             </div>
-                            <button className="button" type="submit">Update Course</button><button class="button button-secondary" onclick="event.preventDefault(); location.href='index.html';">Cancel</button>
+                            <button className="button" type="submit">Update Course</button><button className="button button-secondary" type='button' onClick={this.cancel()}>Cancel</button>
                         </form>
                     </React.Fragment>
                 }

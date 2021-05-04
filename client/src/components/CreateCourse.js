@@ -21,11 +21,19 @@ export default class CreateCourse extends Component {
     }
     
     handleSubmit(data){
+        console.log(data)
+        const name = 'joe@smith.com'
+        const password = 'joepassword'
+        const encodedCredentials = btoa(`${name}:${password}`)
+
         axios({
             method: "post",
             url: 'http://localhost:5000/api/courses',
             data: data, 
-            headers: {"Content-Type": "multipart/form-data"}
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Basic ${encodedCredentials}`
+            }
         })
         .then(res => {
             console.log(res)
