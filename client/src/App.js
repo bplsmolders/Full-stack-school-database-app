@@ -25,6 +25,7 @@ const UserSignInWithContext = withContext(UserSignIn)
 const UserSignOutWithContext = withContext(UserSignOut)
 const CreateCourseWithContext = withContext(CreateCourse)
 const UpdateCourseWithContext = withContext(UpdateCourse)
+const CouseDetailWithContext = withContext(CourseDetail)
 
 export default class App extends Component {
   render(){
@@ -35,7 +36,7 @@ export default class App extends Component {
       <Switch>
         <Route exact path="/" component={CoursesWithContext} />
         <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext} />
-        <Route exact path="/courses/:id" component= {CourseDetail} />
+        <Route exact path="/courses/:id" component= {CouseDetailWithContext} />
         <PrivateRoute exact path="/courses/:id/update" component= {UpdateCourseWithContext} />
         <Route exact path="/signin" component= {UserSignInWithContext} />
         <Route exact path="/signup" component= {UserSignUpWithContext} />
