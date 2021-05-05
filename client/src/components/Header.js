@@ -3,6 +3,7 @@ import { NavLink} from 'react-router-dom'
 
 function Header (props) {
   const  authUser  = props.context.authenticatedUser;
+
   return (
     <header>
       <div className="wrap header--flex">

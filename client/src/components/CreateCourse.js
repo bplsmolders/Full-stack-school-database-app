@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 export default class CreateCourse extends Component {
@@ -10,48 +10,76 @@ export default class CreateCourse extends Component {
             description: '',
             estimatedTime: '',
             materialsNeeded: '',
-            userId: 1
+            userId: props.context.authenticatedUser.userId,
+            errors: []
         };
     }
 
+    // This function handels the form changes and updates state
     handleChange= (e) => {
         this.setState({ [e.target.name]: e.target.value})
     }
     
+    // POST fetch. first checks the respons. If ok, course gets created and UI redirects to main page. 
+    // When the send data is incomplete, validation errors gets stored in state 
+    // on servererror it redirects to /error
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state)
-        const name = 'joe@smith.com'
-        const password = 'joepassword'
+        const user = this.props.context.authenticatedUser
+        const name = user.emailAdress
+        const password = user.password
         const encodedCredentials = btoa(`${name}:${password}`)
 
-        axios.post('http://localhost:5000/api/courses', this.state, { headers: {"Authorization": `Basic ${encodedCredentials}`}})
-            .then(this.props.history.push('/'))
-            .catch(error => {
-                console.log('Error fetching and parsing data', error);
-            });    
+        const url = `http://localhost:5000/api/courses`;
+
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                "Authorization": `Basic ${encodedCredentials}`
+            },
+            body: JSON.stringify(this.state)
+        }
+
+
+        fetch(url,options)
+        .then(res => {
+            if (res.ok){
+                this.props.history.push('/')
+            } else {
+                return res.json()
+            }
+        })
+        .then(errors => {
+            if(errors){
+                this.setState({errors: errors.errors})
+            }
+        })
+        .catch(errors => {
+            console.log('Error fetching and parsing data', errors);
+            this.props.history.push('/error')
+        });   
     }
     
+    //When Cancel buttun is clicked this function redirects the user to the home page
     cancel =  (e) => {
         e.preventDefault();
         this.props.history.push('/')
     }
 
+    // when validation Errors are stored. this function makes sure they are displayed on the UI.
     ErrorsDisplay({ errors }) {
         let errorsDisplay = null;
     
         if (errors.length) {
         errorsDisplay = (
-            <div>
-            <h2 className="validation--errors--label">Validation errors</h2>
-            <div className="validation-errors">
+            <div className="validation--errors">
+            <h3>Validation errors</h3>
                 <ul>
                 {errors.map((error, i) => <li key={i}>{error}</li>)}
                 </ul>
             </div>
-            </div>
-        );
-        }
+        );}
     
         return errorsDisplay;
     }
@@ -62,19 +90,17 @@ export default class CreateCourse extends Component {
             title,
             description,
             estimatedTime,
-            materialsNeeded
+            materialsNeeded,
+            errors
         } = this.state;
+
+        let user = this.props.context.authenticatedUser
 
         return(
             <div className="wrap">
                 <h2>Create Course</h2>
-                {/* <div className="validation--errors">
-                    <h3>Validation Errors</h3>
-                    <ul>
-                        <li>Please provide a value for "Title"</li>
-                        <li>Please provide a value for "Description"</li>
-                    </ul>
-                </div> */}
+                <this.ErrorsDisplay errors={errors} />
+               
                 <form onSubmit={this.handleSubmit}>
                     <div className="main--flex">
                         <div>
@@ -82,7 +108,7 @@ export default class CreateCourse extends Component {
                                 <input id="title" name="title" type="text" value={title} onChange={this.handleChange} />
                             </label>
 
-                            <p>By Joe Smith</p>
+                            <p>{`By ${user.firstName} ${user.lastName} ` }</p>
 
                             <label>Course Description
                                 <textarea id="description" name="description" value={description} onChange={this.handleChange} />

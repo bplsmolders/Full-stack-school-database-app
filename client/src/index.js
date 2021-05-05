@@ -8,6 +8,7 @@ import App from './App';
 import {Provider} from './components/Context';
 import reportWebVitals from './reportWebVitals';
 
+// Provider makes context globally available
 ReactDOM.render(
   <React.StrictMode>
   <Provider>

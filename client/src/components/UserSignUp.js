@@ -14,6 +14,7 @@ export default class UserSignUp extends Component {
         errors: []
       }
     
+    // rendor method passes all elements and functions down to the Form Component
     render(){
         const {
             firstName,
@@ -114,6 +115,7 @@ export default class UserSignUp extends Component {
             confirmPassword
         };
 
+        //POST FETCH based on the global function createUsert (see Context.js)
         context.data.createUser(user)
         .then( errors => {
             if (errors.length) {

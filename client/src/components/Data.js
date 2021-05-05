@@ -1,5 +1,5 @@
 export default class Data {
-
+    // api handler to set up Fetch data. 
     api(path, method, body = null, requiresAuth = false, credentials = null){
         const url = 'http://localhost:5000/api' + path;
 
@@ -23,6 +23,7 @@ export default class Data {
         return fetch(url,options)
     }
 
+    // gets the user with the help of api()
     async getUser(emailAddress, password) {
         const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password });
         if (response.status === 200) {
@@ -35,7 +36,8 @@ export default class Data {
           throw new Error();
         }
     }
-      
+    
+    // gets the user with the help of api()
     async createUser(user) {
         const response = await this.api('/users', 'POST', user);
         if (response.status === 201) {

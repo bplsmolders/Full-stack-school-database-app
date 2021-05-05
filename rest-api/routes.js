@@ -25,11 +25,13 @@ const router = express.Router();
 // Exceeds: Filters out password, createdAt and updatedAt
 router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
     const user = req.currentUser;
+    console.log(user)
 
     res.status(200).json({
       firstName: user.firstName,
       lastName: user.lastName,
-      emailAdress: user.emailAddress
+      emailAdress: user.emailAddress,
+      userId: user.id
     });
 }));
 
@@ -159,6 +161,10 @@ router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res) =>
 
   const currentUserId= req.currentUser.id;
   const courseUserId= course[0].dataValues.userId;
+
+  // console.log(authenticateUser)
+  // console.log(req.currentUser.id)
+  // console.log(courseUserId)
 
   // first checks if course belongs to the current user, only then deletes the course.
   if(currentUserId === courseUserId){

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
-
 import Axios from 'axios';
 
 
@@ -12,6 +11,8 @@ export default class Courses extends Component {
         }
     }
 
+    // On page load all courses GET fetched
+    // GET fetch. first checks the respons. If ok, state gets updated. On servererror to /error
     componentDidMount(){
         Axios.get('http://localhost:5000/api/courses')
         .then( response => {
@@ -19,8 +20,9 @@ export default class Courses extends Component {
                 courses: response.data
             })
         })
-        .catch(error => {
-            console.log('Error fetching and parsing data', error);
+        .catch(errors => {
+            console.log('Error fetching and parsing data', errors);
+            this.props.history.push('/error')
         });    
     }
 
@@ -28,6 +30,7 @@ export default class Courses extends Component {
     render() {  
         return (
             <div className="wrap main--grid">
+                {/* If course is not loaded yet,l length will be 0 and a loading text is shown. Next it will render a elements for each course using the map method */}
                 {(this.state.courses.length === 0)
                 ? <h2>Loading...</h2>
                 :   this.state.courses.map(course =>

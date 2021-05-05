@@ -7,6 +7,7 @@ const Context = React.createContext();
 
 export class Provider extends Component {
 
+  //new data() imports all the functions of and data from component Data
   constructor() {
       super();
       this.data = new Data();
@@ -15,20 +16,6 @@ export class Provider extends Component {
   state = {
       authenticatedUser: Cookies.getJSON('authenticatedUser') || null
   };
-
-  // componentDidMount(){
-    // Axios.get('http://localhost:5000/api/users')
-    //   .then( res => {
-    //       console.log(res)
-    //       this.setState ({
-    //           data: res,
-    //       })
-    //   })
-    //   .catch(error => {
-    //       console.log('Error fetching and parsing data', error);
-    //   });    
-  // }
-
 
   render() {
       const { authenticatedUser } = this.state;
@@ -48,22 +35,24 @@ export class Provider extends Component {
       );
   }
 
-  
+  // function let's user sign in based on emailaddress and password. Sets a cookie so data is stored even when page refreshes
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password);
     if (user !== null) {
+      user.password = password
       this.setState(() => {
         return {
           authenticatedUser: user,
         }
       });
-      // Set cookie
-      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
+      // Set cookie. 
+      // Expires: 1 means the cookie expires after 1 day
+      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1}); 
     } 
     return user;
   }
   
-
+  // Signs user out and removes cookie
   signOut = () => {
     this.setState({ authenticatedUser: null });
     Cookies.remove('authenticatedUser');

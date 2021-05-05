@@ -10,6 +10,7 @@ export default class UserSignIn extends Component {
         errors: [],
     }
 
+    // rendor method passes all elements and functions down to the Form Component
     render(){
         const {
             emailAddress,
@@ -66,6 +67,7 @@ export default class UserSignIn extends Component {
         const { from } = this.props.location.state || { from: { pathname: '/' } };
         const { emailAddress, password } = this.state;
         
+        //GET FETCH based on the global function signIn (see Context.js)
         context.actions.signIn(emailAddress, password)
           .then( user => {
             if (user === null) {
@@ -83,6 +85,7 @@ export default class UserSignIn extends Component {
           })
     }
     
+    // Redirects user to homepage when cancel button is clicked
     cancel = () => {
         this.props.history.push('/');
     }
