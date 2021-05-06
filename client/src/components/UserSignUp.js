@@ -121,7 +121,7 @@ export default class UserSignUp extends Component {
             if (errors.length) {
             this.setState({ errors });
             } else {
-            context.actions.signIn(emailAddress, password)
+                context.actions.signIn(emailAddress, password)
                 .then(() => {
                 this.props.history.push('/'); 
                 console.log('signed up!')   
@@ -129,7 +129,6 @@ export default class UserSignUp extends Component {
             }
         })
         .catch( err => { // handle rejected promises
-            console.log(err);
             this.props.history.push('/error'); // push to history stack
         });     
     }

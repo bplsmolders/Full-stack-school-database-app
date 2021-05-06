@@ -30,12 +30,13 @@ export default class CourseDetail extends Component {
                 this.props.history.push('/notfound')
             }
         })
-        .then(data => 
+        .then(data => {
+            if(data){
             this.setState ({
                 course: data[0],
                 courseUserId: data[0].User.id
-            })
-        )
+            })}
+        })
         .catch(errors => {
             console.log('Error fetching and parsing data', errors);
             this.props.history.push('/error')
@@ -62,7 +63,6 @@ export default class CourseDetail extends Component {
 
         fetch(url,options)
         .then( res =>{
-            console.log(res)
             if (res.ok){
                 this.props.history.push('/')
             }

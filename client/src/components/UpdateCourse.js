@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Axios from 'axios'
+// import Axios from 'axios'
 import { Redirect } from 'react-router-dom';
 
 
@@ -16,16 +16,32 @@ export default class UpdateCourse extends Component {
 
     // GET FETCH using AXIOS based on url id.
     componentDidMount(){
-        Axios.get(`http://localhost:5000/api/courses/${this.props.match.params.id}`)
-        .then( response => {
-            this.setState ({
-                course: response.data[0],
-                userId: response.data[0].User.id
-            })
+        const url = `http://localhost:5000/api/courses/${this.props.match.params.id}`;
+        const options = {
+            method: 'get',
+        }
+
+        fetch(url,options)
+        .then( res =>{
+            if(res.ok) {
+                return res.json()
+            } else if (res.status === 404){
+                console.log('not found')
+                this.props.history.push('/notfound')
+            }
         })
-        .catch(error => {
-            console.log('Error fetching and parsing data', error);
-        });    
+        .then(data => {
+            if(data){
+                this.setState ({
+                    course: data[0],
+                    userId: data[0].User.id
+            })}
+        })
+        .catch(errors => {
+            console.log('Error fetching and parsing data', errors);
+            this.props.history.push('/error')
+        });   
+ 
     }
 
     // update the course based on form changes
@@ -76,10 +92,10 @@ export default class UpdateCourse extends Component {
             });   
     }
     
-    // redirects to home page when cancel button is clicked
+    // redirects to the relevant course detail page when cancel button is clicked
     cancel =  (e) => {
         e.preventDefault();
-        this.props.history.push('/')
+        this.props.history.push(`/courses/${this.props.match.params.id}`)
     }
 
     // when validation Errors are stored. this function makes sure they are displayed on the UI.
@@ -108,9 +124,7 @@ export default class UpdateCourse extends Component {
             userId
         } = this.state
         const authUserId = this.props.context.authenticatedUser.userId
-        console.log(authUserId)
-        console.log(userId)
-        
+
         return(
             <div className="wrap">
             
