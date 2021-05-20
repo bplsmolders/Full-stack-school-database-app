@@ -7,7 +7,6 @@ The api runs on port 5000
 
 The client side is build with React. User information and log-in/log-out functions are shared with Context. 
 Also the user inlog data is "saved" in a cookie for 1 day so the user stays logged in.
-I might need to look into the safety of this functionality...
 
 Data related to the courses are loaded in the routes itself
 The client side runs on port 3000. 
